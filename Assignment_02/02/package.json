@@ -1,0 +1,20 @@
+{
+  "name": "app17",
+  "version": "1.0.0",
+  "description": "This is my first Express Application",
+  "main": "app17.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NODE",
+    "EXPRESS"
+  ],
+  "author": "Heran A.",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.0"
+  }
+}
