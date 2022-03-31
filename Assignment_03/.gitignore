@@ -1,8 +1,6 @@
-/question1/node_modules
-/question1/.env
-/question2/node_modules
-/question2/.env
-/question3/node_modules
-/question3/.env
-/question4/node_modules
-/question4/.env
+/question01/node_modules
+/question01/.env
+/question02/node_modules
+/question02/.env
+/question03/node_modules
+/question03/.env
