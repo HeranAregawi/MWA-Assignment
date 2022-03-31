@@ -6,7 +6,7 @@ module.exports.gamesGetAll= function(req, res) {
     
    
     const add = parseInt( num1) + parseInt( req.query.num2);
-    console.log(add)
-    res.status(200).send(add+"");
+    console.log(add);
+    res.status(200).send(add + "");
 };
 
