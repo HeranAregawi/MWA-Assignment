@@ -1,10 +1,10 @@
 const express = require("express");
 
 const router = express.Router();
-const gamesController = require("../controllers/add.controller");
+const adderController = require("../controllers/add.controller");
 
 router.route("/add/:num1")
-.get(gamesController.gamesGetAll)
+.get(adderController.add)
 
 
 

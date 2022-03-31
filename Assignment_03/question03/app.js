@@ -13,7 +13,7 @@ app.use(function(req, res, next){
 
 app.use("/api", routes);
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, process.env.PUBLIC_FOLDER)));
 
 const server = app.listen(process.env.PORT, function(){
     console.log("Listening to PORT ", server.address().port);
