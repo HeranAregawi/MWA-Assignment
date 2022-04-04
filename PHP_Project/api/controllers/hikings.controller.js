@@ -111,11 +111,11 @@ const updateHiking = function (req, res) {
     console.log("update rating controller");
     const { hiking_Id } = req.params;
     Hiking.findByIdAndUpdate({ _id: hiking_Id }, { $set: { typeOfPlace: req.body.typeOfPlace, places: req.body.places, rating: req.body.rating, feedback: req.body.feedback } }).exec((err, hiking) => {
-        const response = { status: 200, message: "Rating updated successfully" };
+        const response = { status: 200, message: "Hiking updated successfully" };
         if (err) {
             console.log(err);
             response.status = process.env.HTTP_STATUS_INTERNAL_ERROR;
-            response.message = "Error updating rating";
+            response.message = "Error updating Hiking";
         }
         else if (!hiking) {
             console.log(err);
