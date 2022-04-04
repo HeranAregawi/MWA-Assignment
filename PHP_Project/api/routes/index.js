@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const hikingController = require("../controllers/hikings.controller");
-const placeController = require("../controllers/place.controller");
+const placesController = require("../controllers/places.controller");
 
 router.route("/hikings")
     .get(hikingController.getAll)
@@ -11,17 +11,17 @@ router.route("/hikings")
 router.route("/hikings/:hiking_Id")
     .get(hikingController.getOne)
     .delete(hikingController.deleteOne)
-    .patch(hikingController.updateRating)
+    .put(hikingController.updateHiking)
     
 
 router.route("/hikings/:hiking_Id/places")
-    .get(placeController.getAll)
-    .put(placeController.addOne)
+    .get(placesController.getAll)
+    .put(placesController.addOne)
 
 router.route("/hikings/:hiking_Id/places/:place_Id")
-    .get(placeController.getOne)
-    .delete(placeController.deleteOne)
-    .put(placeController.updatePlace)
+    .get(placesController.getOne)
+    .delete(placesController.deleteOne)
+    .put(placesController.updatePlace)
 
 
 module.exports = router;

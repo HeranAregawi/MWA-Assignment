@@ -74,7 +74,7 @@ const addOne = function (req, res) {
     console.log("Hiking AddOne request");
     const newHiking = {
         typeOfPlace: req.body.typeOfPlace,
-        place: req.body.place,
+        places: req.body.places,
         rating: parseInt(req.body.rating),
         feedback: req.body.feedback
 
@@ -107,10 +107,10 @@ const deleteOne = function (req, res) {
 
     })
 }
-const updateRating = function (req, res) {
+const updateHiking = function (req, res) {
     console.log("update rating controller");
     const { hiking_Id } = req.params;
-    Hiking.findByIdAndUpdate({ _id: hiking_Id }, { $set: { rating: req.body.rating } }).exec((err, hiking) => {
+    Hiking.findByIdAndUpdate({ _id: hiking_Id }, { $set: { typeOfPlace: req.body.typeOfPlace, places: req.body.places, rating: req.body.rating, feedback: req.body.feedback } }).exec((err, hiking) => {
         const response = { status: 200, message: "Rating updated successfully" };
         if (err) {
             console.log(err);
@@ -127,15 +127,12 @@ const updateRating = function (req, res) {
     });
 }
 
-
-
-
 module.exports = {
     getAll,
     getOne,
     addOne,
     deleteOne,
-    updateRating,
-   
+    updateHiking,
+
 
 }

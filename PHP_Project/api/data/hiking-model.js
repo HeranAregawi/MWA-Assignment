@@ -1,26 +1,28 @@
 const mongoose = require("mongoose");
 const placeSchema = mongoose.Schema({
-    name:{
+    name: {
         type: String,
-        required : true
+        required: true
     },
-    country:{
+    country: {
         type: String,
         required: true
     }
 })
 
 const hikingSchema = mongoose.Schema({
-    typeOfPlace:{
+    typeOfPlace: {
         type: String,
-        required : true
-    },
-    place: [placeSchema],
-    rating: {
-        type: Number,
         required: true
     },
-    feedback : String
+    places: [placeSchema],
+    rating: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5
+    },
+    feedback: String
 })
 
 
