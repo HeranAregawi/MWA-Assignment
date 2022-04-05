@@ -11,7 +11,8 @@ router.route("/hikings")
 router.route("/hikings/:hiking_Id")
     .get(hikingController.getOne)
     .delete(hikingController.deleteOne)
-    .put(hikingController.updateHiking)
+    .put(hikingController.fullUpdateOne)
+    .patch(hikingController.partialUpdate)
     
 
 router.route("/hikings/:hiking_Id/places")
@@ -21,7 +22,8 @@ router.route("/hikings/:hiking_Id/places")
 router.route("/hikings/:hiking_Id/places/:place_Id")
     .get(placesController.getOne)
     .delete(placesController.deleteOne)
-    .put(placesController.updatePlace)
+    .put(placesController.fullUpdatePlace)
+    .patch(placesController.partialUpdatePlace)
 
 
 module.exports = router;

@@ -83,13 +83,30 @@ const deleteOne = function (req, res) {
 
     });
 }
-
-const updatePlace = (req, res) => {
+const fullUpdatePlace = (req, res) => {
     console.log("update place controller");
     const { hiking_Id } = req.params;
     const { place_Id } = req.params;
     Hiking.updateOne({ _id: hiking_Id, "places._id": place_Id },
-        { $set: { "places.$.name": req.body.name, "places.$.country": req.body.country } }).exec((err, hiking) => {
+        { $set: { "places.$.name": req.body.name , "places.$.country": req.body.country } }).exec((err, hiking) => {
+            console.log(hiking);
+            const response = { status: process.env.HTTP_STATUS_OK, message: "Place updated successfully!" }
+            if (err) {
+                console.log(err);
+                response.status = process.env.HTTP_STATUS_INTERNAL_ERROR;
+                response.message = "Error updating place"
+            }
+
+            res.status(response.status).json(response.message);
+        })
+}
+
+const partialUpdatePlace = (req, res) => {
+    console.log("update place controller");
+    const { hiking_Id } = req.params;
+    const { place_Id } = req.params;
+    Hiking.updateOne({ _id: hiking_Id, "places._id": place_Id },
+        { $set: { "places.$.name": req.body.name , "places.$.country": req.body.country } }).exec((err, hiking) => {
             console.log(hiking);
             const response = { status: process.env.HTTP_STATUS_OK, message: "Place updated successfully!" }
             if (err) {
@@ -104,11 +121,13 @@ const updatePlace = (req, res) => {
 
 
 
+
 module.exports = {
     getAll,
     getOne,
     addOne,
     deleteOne,
-    updatePlace
+    fullUpdatePlace,
+    partialUpdatePlace
 
 }

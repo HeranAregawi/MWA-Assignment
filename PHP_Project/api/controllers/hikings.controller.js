@@ -92,6 +92,7 @@ const addOne = function (req, res) {
 const deleteOne = function (req, res) {
     console.log(req.params.hiking_Id);
     const { hiking_Id } = req.params;
+
     Hiking.findByIdAndDelete(hiking_Id).exec(function (err, deletedhiking) {
         const response = { status: process.env.HTTP_STATUS_NO_CONTENT, message: "Hiking deleted Successfully!" };
         if (err) {
@@ -107,32 +108,103 @@ const deleteOne = function (req, res) {
 
     })
 }
-const updateHiking = function (req, res) {
-    console.log("update rating controller");
-    const { hiking_Id } = req.params;
-    Hiking.findByIdAndUpdate({ _id: hiking_Id }, { $set: { typeOfPlace: req.body.typeOfPlace, places: req.body.places, rating: req.body.rating, feedback: req.body.feedback } }).exec((err, hiking) => {
-        const response = { status: 200, message: "Hiking updated successfully" };
-        if (err) {
-            console.log(err);
-            response.status = process.env.HTTP_STATUS_INTERNAL_ERROR;
-            response.message = "Error updating Hiking";
-        }
-        else if (!hiking) {
-            console.log(err);
-            response.status = process.env.HTTP_STATUS_NOT_FOUND;
-            response.message = "hiking not found";
-        }
+const fullUpdateOne = function (req, res) {
+    console.log("fullUpdate hiking controller");
+    _updateOne(req, res, _replaceOneCallback);
 
+
+}
+const partialUpdate = function (req, res) {
+    console.log("partialUpdate hiking controller");
+    _updateOne(req, res, _partialUpdateCallback)
+}
+const _updateOne = function (req, res, replaceHikingCallback) {
+    console.log(" _updateOne controller");
+    const { hiking_Id } = req.params;
+    isValid = mongoose.isValidObjectId(hiking_Id);
+    if (isValid) {
+        Hiking.findById(hiking_Id).exec(function (err, hiking) {
+            const response = { status: process.env.HTTP_STATUS_NO_CONTENT, message: hiking };
+
+             if (!hiking) {
+                console.log("Hiking with this Id not found");
+                response.status = process.env.HTTP_STATUS_NOT_FOUND;
+                response.message = { message: "Hiking Id not found" }
+            } if (response.status !== process.env.HTTP_STATUS_NO_CONTENT) {
+                res.status(response.status).json(response.message);
+            }
+            replaceHikingCallback(req, res, hiking);
+
+        })
+    } else {
+        console.log("Please insert Valid hiking ID");
+        res.status(response.status).json("please insert valid hiking ID")
+    }
+}
+
+
+const _replaceOneCallback = function (req, res, hiking) {
+    hiking.typeOfPlace = req.body.typeOfPlace;
+    hiking.places = req.body.places;
+    hiking.rating = parseInt(req.body.rating);
+    hiking.feedback = req.body.feedback;
+    hiking.save(function (err, replacedHiking) {
+        console.log(replacedHiking);
+        const response = { status: process.env.HTTP_STATUS_NO_CONTENT, message: replacedHiking };
+        if (err) {
+            response.status = process.env.HTTP_STATUS_INTERNAL_ERROR;
+            response.message = "Error saving hiking"
+        }
         res.status(response.status).json(response.message);
     });
 }
+const _partialUpdateCallback = function(req, res, hiking){
+    hiking.typeOfPlace = req.body.typeOfPlace || hiking.typeOfPlace;
+    hiking.places = req.body.places || hiking.places;
+    hiking.rating = parseInt(req.body.rating || hiking.rating);
+    hiking.feedback = req.body.feedback || hiking.feedback;
+    hiking.save(function (err, replacedHiking){
+        const response = { status: process.env.HTTP_STATUS_NO_CONTENT , message: replacedHiking};
+        if(err){
+            console.log("Error saving hiking partial updates");
+            res.status = response.status.process.env.HTTP_STATUS_INTERNAL_ERROR;
+            res.message = "Error saving hiking partial updates";
+        }
+        res.status(response.status).json(response.message);
+        
+    }
+    )};
+
+
+
+
+
+// console.log("update rating controller");
+// const { hiking_Id } = req.params;
+// Hiking.findByIdAndUpdate({ _id: hiking_Id }, { $set: { typeOfPlace: req.body.typeOfPlace, places: req.body.places, rating: req.body.rating, feedback: req.body.feedback } }).exec((err, hiking) => {
+//     const response = { status: 200, message: "Hiking updated successfully" };
+//     if (err) {
+//         console.log(err);
+//         response.status = process.env.HTTP_STATUS_INTERNAL_ERROR;
+//         response.message = "Error updating Hiking";
+//     }
+//     else if (!hiking) {
+//         console.log(err);
+//         response.status = process.env.HTTP_STATUS_NOT_FOUND;
+//         response.message = "hiking not found";
+//     }
+
+//     res.status(response.status).json(response.message);
+// });
+//}
 
 module.exports = {
     getAll,
     getOne,
     addOne,
     deleteOne,
-    updateHiking,
+    fullUpdateOne,
+    partialUpdate
 
 
 }
